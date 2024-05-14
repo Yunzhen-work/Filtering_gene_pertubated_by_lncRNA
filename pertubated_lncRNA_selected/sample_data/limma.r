@@ -1,0 +1,11 @@
+exprSet=read.table("DANCR.txt",sep="\t",header=TRUE)
+rownames(exprSet)=exprSet[,1]
+exprSet=exprSet[,-1]
+library(limma)
+data1=read.table("divide.txt",sep="\t",header=TRUE)
+design=model.matrix(~factor(data1$category))
+fit=lmFit(exprSet,design)
+fit=eBayes(fit)
+options(digits=4)
+output=topTable(fit,coef=2,adjust='BH')
+write.table(output,"output.txt",sep="\t",row.names=FALSE)
